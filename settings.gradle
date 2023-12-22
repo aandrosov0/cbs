@@ -1,0 +1,2 @@
+rootProject.name = 'cbs'
+include ':model-api', ':database-api', ':servlets'

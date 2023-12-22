@@ -1,0 +1,29 @@
+plugins {
+    id 'java-library'
+}
+
+java {
+    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    api project(':model-api')
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
+    
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testRuntimeOnly 'org.postgresql:postgresql:42.7.1'
+}
+
+test {
+    useJUnitPlatform()
+
+    testLogging {
+        events 'passed', 'failed', 'standard_out'
+    }
+}
