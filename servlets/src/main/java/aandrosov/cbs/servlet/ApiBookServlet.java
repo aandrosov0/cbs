@@ -17,21 +17,10 @@ import aandrosov.cbs.model.Book;
 
 import aandrosov.cbs.database.repository.BookRepository;
 
-@WebServlet("/book")
-public class BookServlet extends HttpServlet {
+@WebServlet("/api/book")
+public class ApiBookServlet extends ApiHttpServlet {
 
     private final BookRepository repository = new BookRepository();
-
-    @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            super.service(request, response);
-        } catch (NotFoundException exception) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        } catch (NumberFormatException | BadRequestException exception) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        }
-    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -57,7 +46,7 @@ public class BookServlet extends HttpServlet {
             throw new BadRequestException();
         }
 
-        Book book = new Book(0, title, description, coverUrl);
+        Book book = new Book(0, title.trim(), description.trim(), coverUrl.trim());
         long id = repository.create(book);
 
         response.addHeader("Content-Type", "application/json");
@@ -76,7 +65,7 @@ public class BookServlet extends HttpServlet {
             throw new BadRequestException();
         }
 
-        if (!repository.update(new Book(id, title, description, coverUrl))) {
+        if (!repository.update(new Book(id, title.trim(), description.trim(), coverUrl.trim()))) {
             throw new NotFoundException();
         }
 
